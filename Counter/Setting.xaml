@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:Counter"
+             Title="Setting"
+             x:Class="Counter.Setting">
+        <ContentPage.BindingContext>
+                <viewmodels:CounterVM />
+        </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Label Text="Button Click Delay Time" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" />
+                        <Entry Placeholder="Delay time (ms)" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" FontSize="Medium" Text="{Binding Delay_Time}" MaxLength="4"/>
+                        <Button Text="Save" FontSize="Medium" Command="{Binding SaveSetting}"/>
+                </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
