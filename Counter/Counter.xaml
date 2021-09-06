@@ -23,18 +23,22 @@
 
                 <Label Text="定量" Grid.Row="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
                 <Entry Placeholder="N = ?" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="Medium" Keyboard="Numeric" Text="{Binding Setting}" ClearButtonVisibility="WhileEditing" MaxLength="4"/>
-                <Button Text="設定" Grid.Row="1" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Set}" CornerRadius="5"/>
+                <Button Text="設定" Grid.Row="1" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Set}" CornerRadius="5" IsEnabled="{Binding Setting_enable}"/>
+                
+                <Label Text="設定鎖" Grid.Row="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Switch Grid.Row="2" Grid.Column="1" HorizontalOptions="CenterAndExpand" IsToggled="{Binding SettingLock}"  VerticalOptions="CenterAndExpand" ThumbColor="{Binding SettingColor}" OnColor="Orange" Scale="2"/>
+                <Label Text="{Binding SettingStatus}" Grid.Row="2" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
 
-                <Label Text="數量" Grid.Row="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Label Text="{Binding Counter}" Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Button Text="+ 1" Grid.Row="2" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Add}" BackgroundColor="ForestGreen" TextColor="White" CornerRadius="5" IsEnabled="{Binding Add_enable}"/>
+                <Label Text="數量" Grid.Row="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Label Text="{Binding Counter}" Grid.Row="3" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Button Text="+ 1" Grid.Row="3" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Add}" BackgroundColor="ForestGreen" TextColor="White" CornerRadius="5" IsEnabled="{Binding Add_enable}"/>
 
-                <Label Text="總數" Grid.Row="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Label Text="{Binding Total}" Grid.Row="3" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Button Text="歸零" Grid.Row="3" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Reset}" BackgroundColor="Red" TextColor="White" CornerRadius="5" IsEnabled="{Binding ResetTrigger}"/>
+                <Label Text="總數" Grid.Row="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Label Text="{Binding Total}" Grid.Row="4" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Button Text="歸零" Grid.Row="4" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Reset}" BackgroundColor="Red" TextColor="White" CornerRadius="5" IsEnabled="{Binding Reset_enable}"/>
 
-                <Label Text="歸零鎖" Grid.Row="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Switch x:Name="Switch" Grid.Row="4" Grid.Column="1" HorizontalOptions="CenterAndExpand" IsToggled="{Binding LockTrigger}"  VerticalOptions="CenterAndExpand" ThumbColor="{Binding LockColor}" OnColor="Orange" Scale="2" />
-                <Label Text="{Binding LockStatus}" Grid.Row="4" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Label Text="歸零鎖" Grid.Row="5" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Switch Grid.Row="5" Grid.Column="1" HorizontalOptions="CenterAndExpand" IsToggled="{Binding ResetLock}"  VerticalOptions="CenterAndExpand" ThumbColor="{Binding LockColor}" OnColor="Orange" Scale="2" />
+                <Label Text="{Binding LockStatus}" Grid.Row="5" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
         </Grid>
 </ContentPage>

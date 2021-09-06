@@ -7,7 +7,7 @@ namespace Counter {
         public class CounterVM : ContentPage {
                 public CounterVM ( ) {
                         LockStatus = "OFF";
-                        ResetTrigger = false;
+                        Reset_enable = false;
                         LockColor = Color.Red;
                 }
                 private string _Setting;
@@ -31,6 +31,14 @@ namespace Counter {
                         get => _Total;
                         set {
                                 _Total = value;
+                                OnPropertyChanged ( );
+                        }
+                }
+                private Color _SettingColor;
+                public Color SettingColor {
+                        get => _SettingColor;
+                        set {
+                                _SettingColor = value;
                                 OnPropertyChanged ( );
                         }
                 }
@@ -59,28 +67,62 @@ namespace Counter {
                                 OnPropertyChanged ( );
                         }
                 }
-                private bool _ResetTrigger;
-                public bool ResetTrigger {
-                        get => _ResetTrigger;
+                private bool _Setting_enable;
+                public bool Setting_enable {
+                        get => _Setting_enable;
                         set {
-                                _ResetTrigger = value;
+                                _Setting_enable = value;
                                 OnPropertyChanged ( );
                         }
                 }
-                private bool _LockTrigger;
-                public bool LockTrigger {
-                        get => _LockTrigger;
+
+                private bool _Reset_enable;
+                public bool Reset_enable {
+                        get => _Reset_enable;
                         set {
-                                _LockTrigger = value;
-                                if ( LockTrigger ) {
+                                _Reset_enable = value;
+                                OnPropertyChanged ( );
+                        }
+                }
+                private bool _SettingLock;
+                public bool SettingLock {
+                        get => _SettingLock;
+                        set {
+                                _SettingLock = value;
+                                if ( SettingLock ) {
+                                        SettingStatus = "ON";
+                                        SettingColor = Color.Green;
+                                        Setting_enable = true;
+                                } else {
+                                        SettingStatus = "OFF";
+                                        SettingColor = Color.Red;
+                                        Setting_enable = false;
+                                }
+                                OnPropertyChanged ( );
+                        }
+                }
+                private bool _ResetLock;
+                public bool ResetLock {
+                        get => _ResetLock;
+                        set {
+                                _ResetLock = value;
+                                if ( ResetLock ) {
                                         LockStatus = "ON";
                                         LockColor = Color.Green;
-                                        ResetTrigger = true;
+                                        Reset_enable = true;
                                 } else {
                                         LockStatus = "OFF";
                                         LockColor = Color.Red;
-                                        ResetTrigger = false;
+                                        Reset_enable = false;
                                 }
+                                OnPropertyChanged ( );
+                        }
+                }
+                private string _SettingStatus;
+                public string SettingStatus {
+                        get => _SettingStatus;
+                        set {
+                                _SettingStatus = value;
                                 OnPropertyChanged ( );
                         }
                 }
@@ -93,7 +135,7 @@ namespace Counter {
                         }
                 }
                 public int Delay_Time {
-                        get => Preferences.Get ( "Delay_Time" , 3000 );
+                        get => Preferences.Get ( "Delay_Time" , 300 );
                         set {
                                 Preferences.Set ( "Delay_Time" , value );
                                 OnPropertyChanged ( );
@@ -105,11 +147,13 @@ namespace Counter {
                         try {
                                 if ( int.Parse ( Setting ) > 0 ) {
                                         Add_enable = true;
+                                        SettingLock = false;
+                                        Reset_enable = false;
                                 }
                         } catch ( Exception ) {
                                 Add_enable = false;
+                                Setting_enable = true;
                         }
-                        ResetTrigger = false;
                 } );
                 public ICommand Add => new Command ( async ( ) => {
                         Add_enable = false;
@@ -137,14 +181,14 @@ namespace Counter {
                 public ICommand Reset => new Command ( ( ) => {
                         Counter = 0;
                         Total = 0;
-                        ResetTrigger = false;
+                        Reset_enable = false;
                         LockColor = Color.Red;
                         LockStatus = "OFF";
-                        LockTrigger = false;
+                        ResetLock = false;
                 } );
                 public ICommand Lock => new Command ( ( ) => {
-                        ResetTrigger = !ResetTrigger;
-                        if ( ResetTrigger ) {
+                        Reset_enable = !Reset_enable;
+                        if ( Reset_enable ) {
                                 LockStatus = "ON";
                                 LockColor = Color.Green;
                         } else {
@@ -152,7 +196,6 @@ namespace Counter {
                                 LockColor = Color.Red;
                         }
                 } );
-
 
                 public ICommand GoToSetting => new Command ( ( ) => {
                         Application.Current.MainPage.Navigation.PushAsync ( new Setting ( ) );
