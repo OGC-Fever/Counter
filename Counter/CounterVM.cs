@@ -144,6 +144,46 @@ namespace Counter {
                                 OnPropertyChanged ( );
                         }
                 }
+                private TimeSpan _Gap;
+                public TimeSpan Gap {
+                        get => _Gap;
+                        set {
+                                _Gap = value;
+                                OnPropertyChanged ( );
+                        }
+                }
+                private float _Total_time;
+                public float Total_time {
+                        get => _Total_time;
+                        set {
+                                _Total_time = value;
+                                OnPropertyChanged ( );
+                        }
+                }
+                private DateTime _Click_time;
+                public DateTime Click_time {
+                        get => _Click_time;
+                        set {
+                                _Click_time = value;
+                                OnPropertyChanged ( );
+                        }
+                }
+                private void Click_Gap ( ) {
+                        if ( Total <= 1 ) {
+                                Click_time = DateTime.Now;
+                                return;
+                        }
+                        Total_time += ( float ) ( DateTime.Now - Click_time ).TotalSeconds;
+                        Click_time = DateTime.Now;
+                        try {
+                                Gap = TimeSpan.FromSeconds ( Math.Round ( Total_time / ( Total - 1 ) ) );
+                        } catch ( Exception ) {
+                                Gap = TimeSpan.FromSeconds ( 0 );
+                        }
+                        System.Diagnostics.Debug.WriteLine ( "Total_time : " + Total_time );
+                        System.Diagnostics.Debug.WriteLine ( "Total : " + Total );
+                        System.Diagnostics.Debug.WriteLine ( "Gap : " + Gap );
+                }
                 public ICommand Set => new Command ( ( ) => {
                         Counter = 0;
                         Total = 0;
@@ -179,6 +219,7 @@ namespace Counter {
                                 await Task.Delay ( Delay_Time );
                         }
                         Add_enable = true;
+                        Click_Gap ( );
                 } );
 
                 public ICommand Reset => new Command ( ( ) => {
@@ -188,6 +229,8 @@ namespace Counter {
                         LockColor = Color.Red;
                         LockStatus = "OFF";
                         ResetLock = false;
+                        Gap = TimeSpan.FromSeconds ( 0 );
+                        Total_time = 0;
                 } );
                 public ICommand Lock => new Command ( ( ) => {
                         Reset_enable = !Reset_enable;

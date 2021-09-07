@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                           xmlns:viewmodels="clr-namespace:Counter" 
-             Title="計數器"
+             Title="慣老闆的最愛"
              x:Class="Counter.Counter">
         <ContentPage.ToolbarItems>
                 <ToolbarItem Text="Setting"  Command="{Binding GoToSetting}"/>
@@ -11,15 +11,8 @@
                 <viewmodels:CounterVM />
         </ContentPage.BindingContext>
         <Grid Padding="10" BackgroundColor="{Binding BG_color}">
-                <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-                <Label Text="計數器" Grid.Row="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Large"/>
+
+                <Label Text="血汗計數器" Grid.Row="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Large"/>
 
                 <Label Text="定量" Grid.Row="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
                 <Entry Placeholder="N = ?" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="Medium" Keyboard="Numeric" Text="{Binding Setting}" ClearButtonVisibility="WhileEditing" MaxLength="4"/>
@@ -40,5 +33,9 @@
                 <Label Text="歸零鎖" Grid.Row="5" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
                 <Switch Grid.Row="5" Grid.Column="1" HorizontalOptions="CenterAndExpand" IsToggled="{Binding ResetLock}"  VerticalOptions="CenterAndExpand" ThumbColor="{Binding LockColor}" OnColor="Orange" Scale="2" />
                 <Label Text="{Binding LockStatus}" Grid.Row="5" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+
+                <Label Text="平均時距" Grid.Row="6" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Label Text="{Binding Gap, StringFormat='{0:mm\\:ss}'}" Grid.Row="6" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+
         </Grid>
 </ContentPage>
