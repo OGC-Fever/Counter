@@ -137,6 +137,9 @@ namespace Counter {
                 public int Delay_Time {
                         get => Preferences.Get ( "Delay_Time" , 300 );
                         set {
+                                if ( value < 0 ) {
+                                        value = 0;
+                                }
                                 Preferences.Set ( "Delay_Time" , value );
                                 OnPropertyChanged ( );
                         }
