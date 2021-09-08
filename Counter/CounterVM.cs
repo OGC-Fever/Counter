@@ -6,9 +6,8 @@ using Xamarin.Essentials;
 namespace Counter {
         public class CounterVM : ContentPage {
                 public CounterVM ( ) {
-                        LockStatus = "OFF";
-                        Reset_enable = false;
-                        LockColor = Color.Red;
+                        SettingLock = false;
+                        ResetLock = false;
                 }
                 private string _Setting;
                 public string Setting {
@@ -160,6 +159,14 @@ namespace Counter {
                                 OnPropertyChanged ( );
                         }
                 }
+                private TimeSpan _Total_time_xaml;
+                public TimeSpan Total_time_xaml {
+                        get => _Total_time_xaml;
+                        set {
+                                _Total_time_xaml = value;
+                                OnPropertyChanged ( );
+                        }
+                }
                 private DateTime _Click_time;
                 public DateTime Click_time {
                         get => _Click_time;
@@ -174,15 +181,16 @@ namespace Counter {
                                 return;
                         }
                         Total_time += ( float ) ( DateTime.Now - Click_time ).TotalSeconds;
+                        Total_time_xaml = TimeSpan.FromSeconds ( Total_time );
                         Click_time = DateTime.Now;
                         try {
                                 Gap = TimeSpan.FromSeconds ( Math.Round ( Total_time / ( Total - 1 ) ) );
                         } catch ( Exception ) {
                                 Gap = TimeSpan.FromSeconds ( 0 );
                         }
-                        System.Diagnostics.Debug.WriteLine ( "Total_time : " + Total_time );
-                        System.Diagnostics.Debug.WriteLine ( "Total : " + Total );
-                        System.Diagnostics.Debug.WriteLine ( "Gap : " + Gap );
+                        //System.Diagnostics.Debug.WriteLine ( "Total_time : " + Total_time );
+                        //System.Diagnostics.Debug.WriteLine ( "Total : " + Total );
+                        //System.Diagnostics.Debug.WriteLine ( "Gap : " + Gap );
                 }
                 public ICommand Set => new Command ( ( ) => {
                         Counter = 0;
