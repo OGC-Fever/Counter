@@ -13,8 +13,6 @@
         </ContentPage.BindingContext>
         <Grid Padding="10" BackgroundColor="{Binding BG_color}">
 
-                <!--<Label Text="血汗工時計數器" Grid.Row="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Large"/>-->
-
                 <Label Text="定量" Grid.Row="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
                 <Entry Placeholder="N = ?" Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="Medium" Keyboard="Numeric" Text="{Binding Setting}" ClearButtonVisibility="WhileEditing" MaxLength="4"/>
                 <Button Text="設定" Grid.Row="0" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Set}" CornerRadius="5" IsEnabled="{Binding Setting_enable}"/>

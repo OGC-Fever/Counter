@@ -6,8 +6,6 @@ namespace Counter {
                         InitializeComponent ( );
 
                         MainPage = new NavigationPage ( new Counter ( ) );
-
-                        //On<Android> ( ).SetBarHeight ( 450 );
                 }
         }
 }

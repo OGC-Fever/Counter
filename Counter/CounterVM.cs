@@ -188,9 +188,6 @@ namespace Counter {
                         } catch ( Exception ) {
                                 Gap = TimeSpan.FromSeconds ( 0 );
                         }
-                        //System.Diagnostics.Debug.WriteLine ( "Total_time : " + Total_time );
-                        //System.Diagnostics.Debug.WriteLine ( "Total : " + Total );
-                        //System.Diagnostics.Debug.WriteLine ( "Gap : " + Gap );
                 }
                 public ICommand Set => new Command ( ( ) => {
                         Counter = 0;
@@ -229,7 +226,6 @@ namespace Counter {
                         Add_enable = true;
                         Click_Gap ( );
                 } );
-
                 public ICommand Reset => new Command ( ( ) => {
                         Counter = 0;
                         Total = 0;
