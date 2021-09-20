@@ -10,13 +10,13 @@
         <ContentPage.Content>
                 <StackLayout Padding="10">
                         <Label Text="Click Delay Time" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" />
-                        <Entry Placeholder="milliseconds" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium" Text="{Binding DelayTime}" MaxLength="4"/>
+                        <Entry Placeholder="milliseconds" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium" Text="{Binding DelayTime}" MaxLength="4" ClearButtonVisibility="WhileEditing"/>
                         <Button Text="Save" FontSize="Medium" Command="{Binding SaveDelayTime}" HorizontalOptions="Center"/>
 
                         <BoxView  VerticalOptions="Center"/>
                         
                         <Label Text="Swipe Interval" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" />
-                        <Entry Placeholder="milliseconds" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium" Text="{Binding SwipeInterval}" MaxLength="4"/>
+                        <Entry Placeholder="milliseconds" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium" Text="{Binding SwipeInterval}" MaxLength="4" ClearButtonVisibility="WhileEditing"/>
                         <Button Text="Save" FontSize="Medium" Command="{Binding SaveSwipeInterval}" HorizontalOptions="Center"/>
                 </StackLayout>
         </ContentPage.Content>

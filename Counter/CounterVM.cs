@@ -3,8 +3,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+
 namespace Counter {
+        public interface IPlaySoundService {
+                void AlertSound ( );
+        }
         public class CounterVM : ContentPage {
+
                 public CounterVM ( ) {
                         Listen ( );
                         SettingLock = false;
@@ -22,11 +27,28 @@ namespace Counter {
                 public void UnListen ( ) {
                         Proc_end = DateTime.Now;
                         MessagingCenter.Unsubscribe<Application , string> ( Application.Current , "prox" );
-                        if ( ( Proc_end - Proc_start ).TotalMilliseconds >= SwipeInterval && Add_enable && !SettingMode) {
+                        if ( ( Proc_end - Proc_start ).TotalMilliseconds >= SwipeInterval && Add_enable && !SettingMode ) {
                                 Add.Execute ( null );
                         }
                         Listen ( );
                 }
+ 
+                private void Click_Gap ( ) {
+                        if ( Total <= 1 ) {
+                                Click_time = DateTime.Now;
+                                return;
+                        }
+                        Total_time += ( float ) ( DateTime.Now - Click_time ).TotalSeconds;
+                        Total_time_xaml = TimeSpan.FromSeconds ( Total_time );
+                        Click_time = DateTime.Now;
+                        try {
+                                Gap = TimeSpan.FromSeconds ( Math.Round ( Total_time / ( Total - 1 ) ) );
+                        } catch ( Exception ) {
+                                Gap = TimeSpan.FromSeconds ( 0 );
+                        }
+                }
+                #region
+
                 public DateTime Proc_start { get; set; }
                 public DateTime Proc_end { get; set; }
                 public bool SettingMode { get; set; }
@@ -166,7 +188,7 @@ namespace Counter {
                         }
                 }
                 public int SwipeInterval {
-                        get => Preferences.Get ( "SwipeInterval" , 300 );
+                        get => Preferences.Get ( "SwipeInterval" , 2000 );
                         set {
                                 if ( value < 0 ) {
                                         value = 0;
@@ -207,20 +229,8 @@ namespace Counter {
                                 OnPropertyChanged ( );
                         }
                 }
-                private void Click_Gap ( ) {
-                        if ( Total <= 1 ) {
-                                Click_time = DateTime.Now;
-                                return;
-                        }
-                        Total_time += ( float ) ( DateTime.Now - Click_time ).TotalSeconds;
-                        Total_time_xaml = TimeSpan.FromSeconds ( Total_time );
-                        Click_time = DateTime.Now;
-                        try {
-                                Gap = TimeSpan.FromSeconds ( Math.Round ( Total_time / ( Total - 1 ) ) );
-                        } catch ( Exception ) {
-                                Gap = TimeSpan.FromSeconds ( 0 );
-                        }
-                }
+                #endregion
+
                 public ICommand Set => new Command ( ( ) => {
                         Counter = 0;
                         Total = 0;
@@ -240,10 +250,12 @@ namespace Counter {
                         if ( int.Parse ( Setting ) == 0 ) {
                                 return;
                         }
+                        DependencyService.Get<IPlaySoundService> ( ).AlertSound ( );
                         Counter++;
                         Total++;
                         if ( Counter == int.Parse ( Setting ) ) {
                                 for ( int i = 0 ; i < 3 ; i++ ) {
+                                        await Task.Delay ( DelayTime );
                                         BG_color = Color.OrangeRed;
                                         await Task.Delay ( DelayTime );
                                         BG_color = Color.White;
