@@ -11,13 +11,14 @@ namespace Counter {
                 protected override void OnAppearing ( ) {
                         base.OnAppearing ( );
                         CounterVM vm = ( CounterVM ) BindingContext;
+                        vm.WorkMode = true;
                         vm.Listen ( );
-                        vm.SettingMode = false;
                 }
 
                 protected override void OnDisappearing ( ) {
                         base.OnDisappearing ( );
                         CounterVM vm = ( CounterVM ) BindingContext;
+                        vm.WorkMode = false;
                         vm.UnListen ( );
                 }
         }

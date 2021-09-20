@@ -27,16 +27,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Counter.xaml.cs">
+    <Compile Update="Pages\Counter.xaml.cs">
       <DependentUpon>Counter.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Setting.xaml.cs">
+    <Compile Update="Pages\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Setting.xaml">
+    <EmbeddedResource Update="Pages\Setting.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -6,14 +6,13 @@ using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Counter.Droid;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 [assembly: Dependency ( typeof ( PlaySound ) )]
 namespace Counter.Droid {
         public class PlaySound : IPlaySoundService {
                 public void AlertSound ( ) {
-                        Android.Net.Uri uri = RingtoneManager.GetDefaultUri ( RingtoneType.Alarm );
+                        Android.Net.Uri uri = RingtoneManager.GetDefaultUri ( RingtoneType.Notification );
                         Ringtone ringtone = RingtoneManager.GetRingtone ( MainActivity.Instance.ApplicationContext , uri );
                         ringtone.Play ( );
                 }
@@ -48,6 +47,23 @@ namespace Counter.Droid {
                 public override void OnRequestPermissionsResult ( int requestCode , string [ ] permissions , [GeneratedEnum] Permission [ ] grantResults ) {
                         Xamarin.Essentials.Platform.OnRequestPermissionsResult ( requestCode , permissions , grantResults );
                         base.OnRequestPermissionsResult ( requestCode , permissions , grantResults );
+                }
+                protected override void OnResume ( ) {
+                        base.OnResume ( );
+
+                        //proximity sensor
+                        SensorManager sm;
+                        sm = ( SensorManager ) GetSystemService ( SensorService );
+                        Sensor prox = sm.GetDefaultSensor ( SensorType.Proximity );
+                        sm.RegisterListener ( this , prox , SensorDelay.Normal );
+                }
+                protected override void OnPause ( ) {
+                        base.OnPause ( );
+
+                        //proximity sensor
+                        SensorManager sm;
+                        sm = ( SensorManager ) GetSystemService ( SensorService );
+                        sm.UnregisterListener ( this );
                 }
         }
 }
