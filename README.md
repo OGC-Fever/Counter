@@ -1,5 +1,5 @@
 # SweatShop Counter
-Simple C# Xamarin App with function lock & click delay function  
+Simple C# Xamarin App with function lock, click delay function & sound alert  
 touchless swipe to increase counter  
 Calc avg. productive  
 Summary total working hours  
