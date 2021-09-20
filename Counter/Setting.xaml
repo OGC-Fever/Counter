@@ -7,11 +7,17 @@
         <ContentPage.BindingContext>
                 <viewmodels:CounterVM />
         </ContentPage.BindingContext>
-    <ContentPage.Content>
-        <StackLayout Padding="10">
-            <Label Text="Button Click Delay Time" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" />
-                        <Entry Placeholder="Delay time (ms)" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" FontSize="Medium" Text="{Binding Delay_Time}" MaxLength="4"/>
-                        <Button Text="Save" FontSize="Medium" Command="{Binding SaveSetting}"/>
+        <ContentPage.Content>
+                <StackLayout Padding="10">
+                        <Label Text="Click Delay Time" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" />
+                        <Entry Placeholder="milliseconds" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium" Text="{Binding DelayTime}" MaxLength="4"/>
+                        <Button Text="Save" FontSize="Medium" Command="{Binding SaveDelayTime}" HorizontalOptions="Center"/>
+
+                        <BoxView  VerticalOptions="Center"/>
+                        
+                        <Label Text="Swipe Interval" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" />
+                        <Entry Placeholder="milliseconds" Keyboard="Numeric" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium" Text="{Binding SwipeInterval}" MaxLength="4"/>
+                        <Button Text="Save" FontSize="Medium" Command="{Binding SaveSwipeInterval}" HorizontalOptions="Center"/>
                 </StackLayout>
-    </ContentPage.Content>
+        </ContentPage.Content>
 </ContentPage>

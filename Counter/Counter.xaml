@@ -3,7 +3,7 @@
         xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         xmlns:viewmodels="clr-namespace:Counter" 
-             Title="血汗工時計算機"
+             Title="血汗計算機"
              x:Class="Counter.Counter">
         <ContentPage.ToolbarItems>
                 <ToolbarItem Text="Setting"  Command="{Binding GoToSetting}"/>
@@ -11,6 +11,7 @@
         <ContentPage.BindingContext>
                 <viewmodels:CounterVM />
         </ContentPage.BindingContext>
+
         <Grid Padding="10" BackgroundColor="{Binding BG_color}">
 
                 <Label Text="定量" Grid.Row="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>

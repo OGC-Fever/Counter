@@ -6,9 +6,31 @@ using Xamarin.Essentials;
 namespace Counter {
         public class CounterVM : ContentPage {
                 public CounterVM ( ) {
+                        Listen ( );
                         SettingLock = false;
                         ResetLock = false;
                 }
+
+                public void Listen ( ) {
+                        Proc_start = DateTime.Now;
+                        MessagingCenter.Subscribe<Application , string> ( Application.Current , "prox" , ( sender , args ) => {
+                                if ( args == "0" ) {
+                                        UnListen ( );
+                                }
+                        } );
+                }
+                public void UnListen ( ) {
+                        Proc_end = DateTime.Now;
+                        MessagingCenter.Unsubscribe<Application , string> ( Application.Current , "prox" );
+                        if ( ( Proc_end - Proc_start ).TotalMilliseconds >= SwipeInterval && Add_enable && !SettingMode) {
+                                Add.Execute ( null );
+                        }
+                        Listen ( );
+                }
+                public DateTime Proc_start { get; set; }
+                public DateTime Proc_end { get; set; }
+                public bool SettingMode { get; set; }
+
                 private string _Setting;
                 public string Setting {
                         get => _Setting;
@@ -133,13 +155,23 @@ namespace Counter {
                                 OnPropertyChanged ( );
                         }
                 }
-                public int Delay_Time {
-                        get => Preferences.Get ( "Delay_Time" , 300 );
+                public int DelayTime {
+                        get => Preferences.Get ( "DelayTime" , 300 );
                         set {
                                 if ( value < 0 ) {
                                         value = 0;
                                 }
-                                Preferences.Set ( "Delay_Time" , value );
+                                Preferences.Set ( "DelayTime" , value );
+                                OnPropertyChanged ( );
+                        }
+                }
+                public int SwipeInterval {
+                        get => Preferences.Get ( "SwipeInterval" , 300 );
+                        set {
+                                if ( value < 0 ) {
+                                        value = 0;
+                                }
+                                Preferences.Set ( "SwipeInterval" , value );
                                 OnPropertyChanged ( );
                         }
                 }
@@ -213,15 +245,15 @@ namespace Counter {
                         if ( Counter == int.Parse ( Setting ) ) {
                                 for ( int i = 0 ; i < 3 ; i++ ) {
                                         BG_color = Color.OrangeRed;
-                                        await Task.Delay ( Delay_Time );
+                                        await Task.Delay ( DelayTime );
                                         BG_color = Color.White;
-                                        await Task.Delay ( Delay_Time );
+                                        await Task.Delay ( DelayTime );
                                 }
                         } else if ( Counter > int.Parse ( Setting ) ) {
                                 Counter = 1;
-                                await Task.Delay ( Delay_Time );
+                                await Task.Delay ( DelayTime );
                         } else {
-                                await Task.Delay ( Delay_Time );
+                                await Task.Delay ( DelayTime );
                         }
                         Add_enable = true;
                         Click_Gap ( );
@@ -248,10 +280,14 @@ namespace Counter {
                 } );
 
                 public ICommand GoToSetting => new Command ( ( ) => {
+                        SettingMode = true;
                         Application.Current.MainPage.Navigation.PushAsync ( new Setting ( ) );
                 } );
-                public ICommand SaveSetting => new Command ( ( ) => {
-                        Preferences.Set ( "Delay_Time" , Delay_Time );
+                public ICommand SaveDelayTime => new Command ( ( ) => {
+                        Preferences.Set ( "DelayTime" , DelayTime );
+                } );
+                public ICommand SaveSwipeInterval => new Command ( ( ) => {
+                        Preferences.Set ( "SwipeInterval" , SwipeInterval );
                 } );
         }
 }
