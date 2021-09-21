@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Counter {
         public interface IPlaySoundService {
