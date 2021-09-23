@@ -6,15 +6,23 @@ using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Counter.Droid;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 [assembly: Dependency ( typeof ( PlaySound ) )]
 namespace Counter.Droid {
         public class PlaySound : IPlaySoundService {
-                public void AlertSound ( ) {
-                        Android.Net.Uri uri = RingtoneManager.GetDefaultUri ( RingtoneType.Notification );
-                        Ringtone ringtone = RingtoneManager.GetRingtone ( MainActivity.Instance.ApplicationContext , uri );
-                        ringtone.Play ( );
+                public async void AlertSound ( ) {
+                        ToneGenerator tone = new ToneGenerator ( Stream.Notification , 100 );
+                        for ( int i = 0 ; i < 3 ; i++ ) {
+                                tone.StartTone ( Tone.CdmaOneMinBeep );
+                                await Task.Delay ( 750 );
+                        }
+
+                }
+                public void NotifySound ( ) {
+                        ToneGenerator tone = new ToneGenerator ( Stream.Notification , 80 );
+                        tone.StartTone ( Tone.CdmaOneMinBeep );
                 }
         }
         [Activity ( Label = "血汗計算機" , Icon = "@mipmap/icon" , Theme = "@style/MainTheme" , MainLauncher = true , ScreenOrientation = ScreenOrientation.Portrait , ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
@@ -28,14 +36,11 @@ namespace Counter.Droid {
                         LoadApplication ( new App ( ) );
 
                         //proximity sensor
-                        SensorManager sm;
-                        sm = ( SensorManager ) GetSystemService ( SensorService );
-                        if ( sm.GetSensorList ( SensorType.Proximity ) != null ) {
-                                Sensor prox = sm.GetDefaultSensor ( SensorType.Proximity );
-                                sm.RegisterListener ( this , prox , SensorDelay.Normal );
-                        }
+                        CallSensorManager ( true );
+
                         Instance = this;
                 }
+
                 public void OnSensorChanged ( SensorEvent e ) {
                         MessagingCenter.Send ( Xamarin.Forms.Application.Current , "prox" , e.Values [ 0 ].ToString ( ) );
                 }
@@ -46,22 +51,27 @@ namespace Counter.Droid {
                         Xamarin.Essentials.Platform.OnRequestPermissionsResult ( requestCode , permissions , grantResults );
                         base.OnRequestPermissionsResult ( requestCode , permissions , grantResults );
                 }
-                protected override void OnResume ( ) {
-                        base.OnResume ( );
-
-                        //proximity sensor
+                public void CallSensorManager ( bool reg ) {
                         SensorManager sm;
                         sm = ( SensorManager ) GetSystemService ( SensorService );
-                        Sensor prox = sm.GetDefaultSensor ( SensorType.Proximity );
-                        sm.RegisterListener ( this , prox , SensorDelay.Normal );
+                        if ( sm.GetSensorList ( SensorType.Proximity ) != null ) {
+                                if ( reg ) {
+                                        Sensor prox = sm.GetDefaultSensor ( SensorType.Proximity );
+                                        sm.RegisterListener ( this , prox , SensorDelay.Fastest );
+                                } else {
+                                        sm.UnregisterListener ( this );
+                                }
+                        }
+                }
+                protected override void OnResume ( ) {
+                        base.OnResume ( );
+                        Instance = this;
+                        CallSensorManager ( true );
+
                 }
                 protected override void OnPause ( ) {
                         base.OnPause ( );
-
-                        //proximity sensor
-                        SensorManager sm;
-                        sm = ( SensorManager ) GetSystemService ( SensorService );
-                        sm.UnregisterListener ( this );
+                        CallSensorManager ( false );
                 }
         }
 }

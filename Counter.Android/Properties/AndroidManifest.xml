@@ -2,8 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="ogc.counter" android:installLocation="auto">
         <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="30" />
         <application android:theme="@style/MainTheme" android:label="血汗計算機">
-                <!--<activity android:name=".MainActivity" 
-                          android:screenOrientation="portrait"
-                          android:configChanges="keyboard|keyboardHidden|orientation" />-->
         </application>
 </manifest>

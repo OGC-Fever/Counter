@@ -7,11 +7,17 @@ using Xamarin.Forms;
 namespace Counter {
         public interface IPlaySoundService {
                 void AlertSound ( );
+                void NotifySound ( );
         }
-        public class CounterVM : BaseVM {
 
+        public class CounterVM : BaseVM {
+                public void KeepScreenOn ( ) {
+                        DeviceDisplay.KeepScreenOn = true;
+                }
+  
                 public CounterVM ( ) {
                         Listen ( );
+                        KeepScreenOn ( );
                         SettingLock = false;
                         ResetLock = false;
                 }
@@ -66,10 +72,10 @@ namespace Counter {
                         if ( int.Parse ( Setting ) == 0 ) {
                                 return;
                         }
-                        DependencyService.Get<IPlaySoundService> ( ).AlertSound ( );
                         Counter++;
                         Total++;
                         if ( Counter == int.Parse ( Setting ) ) {
+                                DependencyService.Get<IPlaySoundService> ( ).AlertSound ( );
                                 for ( int i = 0 ; i < 3 ; i++ ) {
                                         await Task.Delay ( DelayTime );
                                         BG_color = Color.OrangeRed;
@@ -77,10 +83,11 @@ namespace Counter {
                                         BG_color = Color.White;
                                         await Task.Delay ( DelayTime );
                                 }
-                        } else if ( Counter > int.Parse ( Setting ) ) {
-                                Counter = 1;
-                                await Task.Delay ( DelayTime );
                         } else {
+                                DependencyService.Get<IPlaySoundService> ( ).NotifySound ( );
+                                if ( Counter > int.Parse ( Setting ) ) {
+                                        Counter = 1;
+                                }
                                 await Task.Delay ( DelayTime );
                         }
                         Add_enable = true;
