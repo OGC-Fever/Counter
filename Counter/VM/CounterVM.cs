@@ -14,9 +14,8 @@ namespace Counter {
                 public void KeepScreenOn ( ) {
                         DeviceDisplay.KeepScreenOn = true;
                 }
-  
+
                 public CounterVM ( ) {
-                        Listen ( );
                         KeepScreenOn ( );
                         SettingLock = false;
                         ResetLock = false;
@@ -24,16 +23,16 @@ namespace Counter {
 
                 public void Listen ( ) {
                         Proc_start = DateTime.Now;
-                        MessagingCenter.Subscribe<Application , string> ( Application.Current , "prox" , ( sender , args ) => {
-                                if ( args == "0" ) {
+                        MessagingCenter.Subscribe<Application> ( Application.Current , "prox" , ( sender ) => {
+                                if ( WorkMode && Add_enable ) {
                                         UnListen ( );
                                 }
                         } );
                 }
                 public void UnListen ( ) {
                         Proc_end = DateTime.Now;
-                        MessagingCenter.Unsubscribe<Application , string> ( Application.Current , "prox" );
-                        if ( ( Proc_end - Proc_start ).TotalMilliseconds >= SwipeInterval && Add_enable && WorkMode ) {
+                        MessagingCenter.Unsubscribe<Application> ( Application.Current , "prox" );
+                        if ( ( Proc_end - Proc_start ).TotalMilliseconds >= SwipeInterval ) {
                                 Add.Execute ( null );
                         }
                         Listen ( );
@@ -61,6 +60,7 @@ namespace Counter {
                                         Add_enable = true;
                                         SettingLock = false;
                                         Reset_enable = false;
+                                        Setting = int.Parse ( Setting ).ToString ( );
                                 }
                         } catch ( Exception ) {
                                 Add_enable = false;
@@ -69,7 +69,11 @@ namespace Counter {
                 } );
                 public ICommand Add => new Command ( async ( ) => {
                         Add_enable = false;
-                        if ( int.Parse ( Setting ) == 0 ) {
+                        try {
+                                if ( int.Parse ( Setting ) == 0 ) {
+                                        return;
+                                }
+                        } catch ( Exception ) {
                                 return;
                         }
                         Counter++;
@@ -115,7 +119,7 @@ namespace Counter {
                 } );
 
                 public ICommand GoToSetting => new Command ( ( ) => {
-                        WorkMode = true;
+                        WorkMode = false;
                         Application.Current.MainPage.Navigation.PushAsync ( new Setting ( ) );
                 } );
                 public ICommand SaveDelayTime => new Command ( ( ) => {

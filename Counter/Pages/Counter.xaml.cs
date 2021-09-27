@@ -14,12 +14,10 @@ namespace Counter {
                         vm.WorkMode = true;
                         vm.Listen ( );
                 }
-
                 protected override void OnDisappearing ( ) {
                         base.OnDisappearing ( );
                         CounterVM vm = ( CounterVM ) BindingContext;
                         vm.WorkMode = false;
-                        vm.UnListen ( );
                 }
         }
 }

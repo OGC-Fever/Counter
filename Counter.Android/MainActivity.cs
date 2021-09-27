@@ -15,14 +15,17 @@ namespace Counter.Droid {
                 public async void AlertSound ( ) {
                         ToneGenerator tone = new ToneGenerator ( Stream.Notification , 100 );
                         for ( int i = 0 ; i < 3 ; i++ ) {
-                                tone.StartTone ( Tone.CdmaOneMinBeep );
-                                await Task.Delay ( 750 );
+                                tone.StartTone ( Tone.CdmaOneMinBeep , 300 );
+                                await Task.Delay ( 800 );
                         }
+                        tone.Release ( );
 
                 }
-                public void NotifySound ( ) {
-                        ToneGenerator tone = new ToneGenerator ( Stream.Notification , 80 );
-                        tone.StartTone ( Tone.CdmaOneMinBeep );
+                public async void NotifySound ( ) {
+                        ToneGenerator tone = new ToneGenerator ( Stream.Notification , 100 );
+                        tone.StartTone ( Tone.CdmaNetworkBusy , 300 );
+                        await Task.Delay ( 500 );
+                        tone.Release ( );
                 }
         }
         [Activity ( Label = "血汗計算機" , Icon = "@mipmap/icon" , Theme = "@style/MainTheme" , MainLauncher = true , ScreenOrientation = ScreenOrientation.Portrait , ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
@@ -42,7 +45,9 @@ namespace Counter.Droid {
                 }
 
                 public void OnSensorChanged ( SensorEvent e ) {
-                        MessagingCenter.Send ( Xamarin.Forms.Application.Current , "prox" , e.Values [ 0 ].ToString ( ) );
+                        if ( e.Values [ 0 ] == 0 ) {
+                                MessagingCenter.Send ( Xamarin.Forms.Application.Current , "prox" );
+                        }
                 }
                 void ISensorEventListener.OnAccuracyChanged ( Sensor sensor , SensorStatus accuracy ) {
                         return;
@@ -65,13 +70,13 @@ namespace Counter.Droid {
                 }
                 protected override void OnResume ( ) {
                         base.OnResume ( );
-                        Instance = this;
                         CallSensorManager ( true );
-
                 }
+     
                 protected override void OnPause ( ) {
                         base.OnPause ( );
                         CallSensorManager ( false );
                 }
+   
         }
 }
