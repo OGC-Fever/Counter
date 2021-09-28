@@ -119,7 +119,6 @@ namespace Counter {
                 } );
 
                 public ICommand GoToSetting => new Command ( ( ) => {
-                        WorkMode = false;
                         Application.Current.MainPage.Navigation.PushAsync ( new Setting ( ) );
                 } );
                 public ICommand SaveDelayTime => new Command ( ( ) => {
