@@ -25,17 +25,16 @@ namespace Counter {
                         Proc_start = DateTime.Now;
                         MessagingCenter.Subscribe<Application> ( Application.Current , "prox" , ( sender ) => {
                                 if ( WorkMode && Add_enable ) {
-                                        UnListen ( );
+                                        Proc_end = DateTime.Now;
+                                        if ( ( Proc_end - Proc_start ).TotalMilliseconds >= SwipeInterval ) {
+                                                Add.Execute ( null );
+                                                Proc_start = DateTime.Now;
+                                        }
                                 }
                         } );
                 }
                 public void UnListen ( ) {
-                        Proc_end = DateTime.Now;
                         MessagingCenter.Unsubscribe<Application> ( Application.Current , "prox" );
-                        if ( ( Proc_end - Proc_start ).TotalMilliseconds >= SwipeInterval ) {
-                                Add.Execute ( null );
-                        }
-                        Listen ( );
                 }
 
                 private void Click_Gap ( ) {
