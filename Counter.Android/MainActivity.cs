@@ -19,7 +19,6 @@ namespace Counter.Droid {
                                 await Task.Delay ( 800 );
                         }
                         tone.Release ( );
-
                 }
                 public async void NotifySound ( ) {
                         ToneGenerator tone = new ToneGenerator ( Stream.Notification , 100 );
@@ -38,7 +37,6 @@ namespace Counter.Droid {
                         Forms.Init ( this , savedInstanceState );
                         LoadApplication ( new App ( ) );
 
-                        //proximity sensor
                         CallSensorManager ( true );
 
                         Instance = this;
@@ -46,7 +44,9 @@ namespace Counter.Droid {
 
                 public void OnSensorChanged ( SensorEvent e ) {
                         if ( e.Values [ 0 ] == 0 ) {
-                                MessagingCenter.Send ( Xamarin.Forms.Application.Current , "prox" );
+                                if ( e.Sensor.Type == SensorType.Proximity ) {
+                                        MessagingCenter.Send ( Xamarin.Forms.Application.Current , "prox" );
+                                }
                         }
                 }
                 void ISensorEventListener.OnAccuracyChanged ( Sensor sensor , SensorStatus accuracy ) {
@@ -72,11 +72,11 @@ namespace Counter.Droid {
                         base.OnResume ( );
                         CallSensorManager ( true );
                 }
-     
+
                 protected override void OnPause ( ) {
                         base.OnPause ( );
                         CallSensorManager ( false );
                 }
-   
+
         }
 }

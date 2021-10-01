@@ -23,11 +23,19 @@
                 <Label Text="{Binding SettingStatus}" Grid.Row="1" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
 
                 <Label Text="數量" Grid.Row="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Label Text="{Binding Counter}" Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" FontAttributes="Bold" />
+                <Label Text="{Binding Counter}" Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" FontAttributes="Bold" >
+                        <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Edit_Counter}"/>
+                        </Label.GestureRecognizers>
+                </Label>
                 <Button Text="+ 1" Grid.Row="2" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Add}" BackgroundColor="ForestGreen" TextColor="White" CornerRadius="5" IsEnabled="{Binding Add_enable}"/>
 
                 <Label Text="總數" Grid.Row="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Label Text="{Binding Total}" Grid.Row="3" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" FontAttributes="Bold"/>
+                <Label Text="{Binding Total}" Grid.Row="3" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium" FontAttributes="Bold">
+                        <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Edit_Total}" />
+                        </Label.GestureRecognizers>
+                </Label>
                 <Button Text="歸零" Grid.Row="3" Grid.Column="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="Medium" Command="{Binding Reset}" BackgroundColor="Red" TextColor="White" CornerRadius="5" IsEnabled="{Binding Reset_enable}"/>
 
                 <Label Text="歸零鎖" Grid.Row="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
@@ -38,7 +46,7 @@
                 <Label Text="{Binding Gap, StringFormat='{0:mm\\:ss}'}" Grid.Row="5" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
 
                 <Label Text="總工時(時:分)" Grid.Row="6" Grid.ColumnSpan="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
-                <Label Text="{Binding Total_time_xaml, StringFormat='{0:hh\\:mm}'}" Grid.Row="6" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                <Label Text="{Binding Total_time, StringFormat='{0:hh\\:mm}'}" Grid.Row="6" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Medium"/>
 
         </Grid>
 </ContentPage>

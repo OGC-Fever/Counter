@@ -37,23 +37,10 @@ namespace Counter {
                         MessagingCenter.Unsubscribe<Application> ( Application.Current , "prox" );
                 }
 
-                private void Click_Gap ( ) {
-                        if ( Total <= 1 ) {
-                                Click_time = DateTime.Now;
-                                return;
-                        }
-                        Total_time += ( float ) ( DateTime.Now - Click_time ).TotalSeconds;
-                        Total_time_xaml = TimeSpan.FromSeconds ( Total_time );
-                        Click_time = DateTime.Now;
-                        try {
-                                Gap = TimeSpan.FromSeconds ( Math.Round ( Total_time / ( Total - 1 ) ) );
-                        } catch ( Exception ) {
-                                Gap = TimeSpan.FromSeconds ( 0 );
-                        }
-                }
                 public ICommand Set => new Command ( ( ) => {
-                        Counter = 0;
-                        Total = 0;
+                        //Counter = 0;
+                        //Total = 0;
+                        Click_time = DateTime.Now;
                         try {
                                 if ( int.Parse ( Setting ) > 0 ) {
                                         Add_enable = true;
@@ -68,33 +55,32 @@ namespace Counter {
                 } );
                 public ICommand Add => new Command ( async ( ) => {
                         Add_enable = false;
+                        Counter++;
+                        Total++;
+                        Total_time += DateTime.Now - Click_time;
+                        Gap = TimeSpan.FromSeconds ( Math.Round ( Total_time.TotalSeconds / Total ) );
+                        Click_time = DateTime.Now;
                         try {
-                                if ( int.Parse ( Setting ) == 0 ) {
-                                        return;
+                                if ( Counter == int.Parse ( Setting ) ) {
+                                        DependencyService.Get<IPlaySoundService> ( ).AlertSound ( );
+                                        for ( int i = 0 ; i < 3 ; i++ ) {
+                                                await Task.Delay ( DelayTime );
+                                                BG_color = Color.OrangeRed;
+                                                await Task.Delay ( DelayTime );
+                                                BG_color = Color.White;
+                                                await Task.Delay ( DelayTime );
+                                        }
+                                } else {
+                                        DependencyService.Get<IPlaySoundService> ( ).NotifySound ( );
+                                        if ( Counter > int.Parse ( Setting ) ) {
+                                                Counter = 1;
+                                        }
+                                        await Task.Delay ( DelayTime );
                                 }
                         } catch ( Exception ) {
                                 return;
                         }
-                        Counter++;
-                        Total++;
-                        if ( Counter == int.Parse ( Setting ) ) {
-                                DependencyService.Get<IPlaySoundService> ( ).AlertSound ( );
-                                for ( int i = 0 ; i < 3 ; i++ ) {
-                                        await Task.Delay ( DelayTime );
-                                        BG_color = Color.OrangeRed;
-                                        await Task.Delay ( DelayTime );
-                                        BG_color = Color.White;
-                                        await Task.Delay ( DelayTime );
-                                }
-                        } else {
-                                DependencyService.Get<IPlaySoundService> ( ).NotifySound ( );
-                                if ( Counter > int.Parse ( Setting ) ) {
-                                        Counter = 1;
-                                }
-                                await Task.Delay ( DelayTime );
-                        }
                         Add_enable = true;
-                        Click_Gap ( );
                 } );
                 public ICommand Reset => new Command ( ( ) => {
                         Counter = 0;
@@ -104,7 +90,7 @@ namespace Counter {
                         LockStatus = "OFF";
                         ResetLock = false;
                         Gap = TimeSpan.FromSeconds ( 0 );
-                        Total_time = 0;
+                        Total_time = TimeSpan.FromSeconds ( 0 );
                 } );
                 public ICommand Lock => new Command ( ( ) => {
                         Reset_enable = !Reset_enable;
@@ -115,6 +101,36 @@ namespace Counter {
                                 LockStatus = "OFF";
                                 LockColor = Color.Red;
                         }
+                } );
+                public ICommand Edit_Counter => new Command ( async ( ) => {
+                        if ( SettingLock == false ) {
+                                return;
+                        }
+                        WorkMode = false;
+                        string result = await Application.Current.MainPage.DisplayPromptAsync ( "輸入數值" , "數量" , keyboard: Keyboard.Numeric );
+                        try {
+                                if ( int.Parse ( result ) <= int.Parse ( Setting ) ) {
+                                        Counter = int.Parse ( result );
+                                }
+                        } catch ( Exception ) {
+                                return;
+                        }
+                        WorkMode = true;
+                } );
+                public ICommand Edit_Total => new Command ( async ( ) => {
+                        if ( SettingLock == false ) {
+                                return;
+                        }
+                        WorkMode = false;
+                        string result = await Application.Current.MainPage.DisplayPromptAsync ( "輸入數值" , "數量" , keyboard: Keyboard.Numeric );
+                        try {
+                                if ( int.Parse ( result ) >= Counter ) {
+                                        Total = int.Parse ( result );
+                                }
+                        } catch ( Exception ) {
+                                return;
+                        }
+                        WorkMode = true;
                 } );
 
                 public ICommand GoToSetting => new Command ( ( ) => {

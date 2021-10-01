@@ -42,6 +42,7 @@ namespace Counter {
                         get => _SettingColor;
                         set {
                                 _SettingColor = value;
+
                                 OnPropertyChanged ( );
                         }
                 }
@@ -96,10 +97,16 @@ namespace Counter {
                                         SettingStatus = "ON";
                                         SettingColor = Color.Green;
                                         Setting_enable = true;
+                                        WorkMode = false;
+                                        Add_enable = false;
                                 } else {
                                         SettingStatus = "OFF";
                                         SettingColor = Color.Red;
                                         Setting_enable = false;
+                                        WorkMode = true;
+                                        if ( Setting != null ) {
+                                                Add_enable = true;
+                                        }
                                 }
                                 OnPropertyChanged ( );
                         }
@@ -165,22 +172,15 @@ namespace Counter {
                                 OnPropertyChanged ( );
                         }
                 }
-                private float _Total_time;
-                public float Total_time {
+                private TimeSpan _Total_time;
+                public TimeSpan Total_time {
                         get => _Total_time;
                         set {
                                 _Total_time = value;
                                 OnPropertyChanged ( );
                         }
                 }
-                private TimeSpan _Total_time_xaml;
-                public TimeSpan Total_time_xaml {
-                        get => _Total_time_xaml;
-                        set {
-                                _Total_time_xaml = value;
-                                OnPropertyChanged ( );
-                        }
-                }
+
                 private DateTime _Click_time;
                 public DateTime Click_time {
                         get => _Click_time;
