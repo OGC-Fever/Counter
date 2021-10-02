@@ -107,7 +107,7 @@ namespace Counter {
                                 return;
                         }
                         WorkMode = false;
-                        string result = await Application.Current.MainPage.DisplayPromptAsync ( "輸入數值" , "數量" , keyboard: Keyboard.Numeric );
+                        string result = await Application.Current.MainPage.DisplayPromptAsync ( "自訂數量" , null , keyboard: Keyboard.Numeric );
                         try {
                                 if ( int.Parse ( result ) <= int.Parse ( Setting ) ) {
                                         Counter = int.Parse ( result );
@@ -122,7 +122,7 @@ namespace Counter {
                                 return;
                         }
                         WorkMode = false;
-                        string result = await Application.Current.MainPage.DisplayPromptAsync ( "輸入數值" , "數量" , keyboard: Keyboard.Numeric );
+                        string result = await Application.Current.MainPage.DisplayPromptAsync ( "自訂總數" , null , keyboard: Keyboard.Numeric );
                         try {
                                 if ( int.Parse ( result ) >= Counter ) {
                                         Total = int.Parse ( result );
