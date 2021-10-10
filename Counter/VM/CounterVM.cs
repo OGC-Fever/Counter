@@ -11,12 +11,8 @@ namespace Counter {
         }
 
         public class CounterVM : BaseVM {
-                public void KeepScreenOn ( ) {
-                        DeviceDisplay.KeepScreenOn = true;
-                }
 
                 public CounterVM ( ) {
-                        KeepScreenOn ( );
                         SettingLock = false;
                         ResetLock = false;
                 }
@@ -38,8 +34,6 @@ namespace Counter {
                 }
 
                 public ICommand Set => new Command ( ( ) => {
-                        //Counter = 0;
-                        //Total = 0;
                         Click_time = DateTime.Now;
                         try {
                                 if ( int.Parse ( Setting ) > 0 ) {

@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System.Diagnostics;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Counter {
@@ -13,12 +14,6 @@ namespace Counter {
                         CounterVM vm = ( CounterVM ) BindingContext;
                         vm.WorkMode = true;
                         vm.Listen ( );
-                }
-                protected override void OnDisappearing ( ) {
-                        base.OnDisappearing ( );
-                        CounterVM vm = ( CounterVM ) BindingContext;
-                        vm.WorkMode = false;
-                        vm.UnListen ( );
                 }
         }
 }

@@ -62,7 +62,7 @@ namespace Counter.Droid {
                         if ( sm.GetSensorList ( SensorType.Proximity ) != null ) {
                                 if ( reg ) {
                                         Sensor prox = sm.GetDefaultSensor ( SensorType.Proximity );
-                                        sm.RegisterListener ( this , prox , SensorDelay.Fastest );
+                                        sm.RegisterListener ( this , prox , SensorDelay.Normal );
                                 } else {
                                         sm.UnregisterListener ( this );
                                 }
@@ -73,10 +73,9 @@ namespace Counter.Droid {
                         CallSensorManager ( true );
                 }
 
-                protected override void OnPause ( ) {
-                        base.OnPause ( );
+                protected override void OnUserLeaveHint ( ) {
+                        base.OnUserLeaveHint ( );
                         CallSensorManager ( false );
                 }
-
         }
 }

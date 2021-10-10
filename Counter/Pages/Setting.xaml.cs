@@ -8,5 +8,11 @@ namespace Counter {
                 public Setting ( ) {
                         InitializeComponent ( );
                 }
+                protected override void OnAppearing ( ) {
+                        base.OnAppearing ( );
+                        CounterVM vm = ( CounterVM ) BindingContext;
+                        vm.WorkMode = false;
+                        vm.UnListen ( );
+                }
         }
 }
