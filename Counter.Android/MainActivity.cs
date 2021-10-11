@@ -71,6 +71,7 @@ namespace Counter.Droid {
                 protected override void OnResume ( ) {
                         base.OnResume ( );
                         CallSensorManager ( true );
+                        MessagingCenter.Send ( Xamarin.Forms.Application.Current , "timer start" );
                 }
 
                 protected override void OnUserLeaveHint ( ) {

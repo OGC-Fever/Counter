@@ -11,14 +11,24 @@ namespace Counter {
         }
 
         public class CounterVM : BaseVM {
-
                 public CounterVM ( ) {
                         SettingLock = false;
                         ResetLock = false;
                 }
+                public async Task SpeakNow ( string text ) {
+                        SpeechOptions settings = new SpeechOptions ( ) {
+                                Volume = .1f ,
+                                Pitch = 1.0f
+                        };
+                        await TextToSpeech.SpeakAsync ( text , settings );
+                }
 
                 public void Listen ( ) {
                         Proc_start = DateTime.Now;
+                        MessagingCenter.Subscribe<Application> ( Application.Current , "timer start" , ( sender ) => {
+                                Proc_start = DateTime.Now;
+                                Click_time = DateTime.Now;
+                        } );
                         MessagingCenter.Subscribe<Application> ( Application.Current , "prox" , ( sender ) => {
                                 if ( WorkMode && Add_enable ) {
                                         Proc_end = DateTime.Now;
@@ -36,6 +46,9 @@ namespace Counter {
                 public ICommand Set => new Command ( ( ) => {
                         Click_time = DateTime.Now;
                         try {
+                                if ( Counter > Total || Counter > int.Parse ( Setting ) ) {
+                                        return;
+                                }
                                 if ( int.Parse ( Setting ) > 0 ) {
                                         Add_enable = true;
                                         SettingLock = false;
@@ -56,6 +69,7 @@ namespace Counter {
                         Click_time = DateTime.Now;
                         try {
                                 if ( Counter == int.Parse ( Setting ) ) {
+                                        await SpeakNow ( $"{Counter} set" );
                                         DependencyService.Get<IPlaySoundService> ( ).AlertSound ( );
                                         for ( int i = 0 ; i < 3 ; i++ ) {
                                                 await Task.Delay ( DelayTime );
@@ -65,10 +79,11 @@ namespace Counter {
                                                 await Task.Delay ( DelayTime );
                                         }
                                 } else {
-                                        DependencyService.Get<IPlaySoundService> ( ).NotifySound ( );
                                         if ( Counter > int.Parse ( Setting ) ) {
                                                 Counter = 1;
                                         }
+                                        await SpeakNow ( $"{Counter} set" );
+                                        DependencyService.Get<IPlaySoundService> ( ).NotifySound ( );
                                         await Task.Delay ( DelayTime );
                                 }
                         } catch ( Exception ) {
