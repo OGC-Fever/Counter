@@ -29,6 +29,9 @@ namespace Counter {
                                 Proc_start = DateTime.Now;
                                 Click_time = DateTime.Now;
                         } );
+                        MessagingCenter.Subscribe<Application> ( Application.Current , "back pressed" , ( sender ) => {
+                                Setting = null;
+                        } );
                         MessagingCenter.Subscribe<Application> ( Application.Current , "prox" , ( sender ) => {
                                 if ( WorkMode && Add_enable ) {
                                         Proc_end = DateTime.Now;
@@ -69,7 +72,7 @@ namespace Counter {
                         Click_time = DateTime.Now;
                         try {
                                 if ( Counter == int.Parse ( Setting ) ) {
-                                        await SpeakNow ( $"{Counter} set" );
+                                        await SpeakNow ( $"{Counter}" );
                                         DependencyService.Get<IPlaySoundService> ( ).AlertSound ( );
                                         for ( int i = 0 ; i < 3 ; i++ ) {
                                                 await Task.Delay ( DelayTime );
@@ -82,7 +85,7 @@ namespace Counter {
                                         if ( Counter > int.Parse ( Setting ) ) {
                                                 Counter = 1;
                                         }
-                                        await SpeakNow ( $"{Counter} set" );
+                                        await SpeakNow ( $"{Counter}" );
                                         DependencyService.Get<IPlaySoundService> ( ).NotifySound ( );
                                         await Task.Delay ( DelayTime );
                                 }

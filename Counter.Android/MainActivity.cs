@@ -73,10 +73,14 @@ namespace Counter.Droid {
                         CallSensorManager ( true );
                         MessagingCenter.Send ( Xamarin.Forms.Application.Current , "timer start" );
                 }
-
                 protected override void OnUserLeaveHint ( ) {
                         base.OnUserLeaveHint ( );
                         CallSensorManager ( false );
+                }
+                public override void OnBackPressed ( ) {
+                        base.OnBackPressed ( );
+                        CallSensorManager ( false );
+                        MessagingCenter.Send ( Xamarin.Forms.Application.Current , "back pressed" );
                 }
         }
 }
